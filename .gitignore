@@ -1,7 +1,7 @@
 !Build/
 .last_cover_stats
 /META.yml
-/META.json
+!META.json
 /MYMETA.*
 *.o
 *.pm.tdy
@@ -12,20 +12,27 @@ cover_db/
 
 # Devel::NYTProf
 nytprof.out
+nytprof.out*
+nytprof*/
 
-# Dizt::Zilla
+# Dist::Zilla
 /.build/
+
+# prove
+/.prove
 
 # Module::Build
 _build/
 Build
 Build.bat
+/_build*
 
 # Module::Install
 inc/
 
 # ExtUtils::MakeMaker
 /blib/
+pm_to_blib
 /_eumm/
 /*.gz
 /Makefile
@@ -33,3 +40,17 @@ inc/
 /MANIFEST.bak
 /pm_to_blib
 /*.zip
+
+# Editor and file browser
+.DS_Store
+*~
+*.bak
+._*
+
+############
+
+/Lingua-Stem-Cistem-*
+
+
+
+
