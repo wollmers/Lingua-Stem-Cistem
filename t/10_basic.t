@@ -25,3 +25,4 @@ if (1) {
 }
 
 done_testing;
+
