@@ -47,26 +47,6 @@ sub stem {
     return $word;
 }
 
-=pod
-
-sub segment{
-    $word = shift;
-    $case_insensitive = shift;
-    $rest_length = 0;
-
-    $upper = (ucfirst $word eq $word);
-
-    $word = lc($word);
-
-    $original = $word;
-
-    $word =~s/sch/\$/g;
-    $word =~s/ei/\%/g;
-    $word =~s/ie/\&/g;
-
-    $word =~ s/(.)\1/\1\*/g;
-
-=cut
 
 sub segment {
     my $word = shift // '';
@@ -139,6 +119,7 @@ CISTEM - Stemmer for German
 <a href='http://cpants.cpanauthors.org/dist/Lingua-Stem-Cistem'><img src='http://cpants.cpanauthors.org/dist/Lingua-Stem-Cistem.png' alt='Kwalitee Score' /></a>
 <a href="http://badge.fury.io/pl/Lingua-Stem-Cistem"><img src="https://badge.fury.io/pl/Lingua-Stem-Cistem.svg" alt="CPAN version" height="18"></a>
 <a href="https://kritika.io/users/davorg/repos/wollmers+Lingua-Stem-Cistem/"><img alt="Kritika grade for Lingua-Stem-Cistem" src="https://kritika.io/users/wollmers/repos/wollmers+Lingua-Stem-Cistem/heads/master/status.svg"></a>
+
 =end html
 
 =head1 SYNOPSIS
@@ -190,9 +171,12 @@ the end. To be able to return the stem unchanged so the stem and the rest
 can be concatenated to form the original word, all subsitutions that altered
 the stem in any other way than by removing letters at the end were left out.
 
+=back
+
 =head1 SOURCE REPOSITORY
 
 L<http://github.com/wollmers/Lingua-Stem-Cistem>
+
 
 =head1 AUTHOR
 
