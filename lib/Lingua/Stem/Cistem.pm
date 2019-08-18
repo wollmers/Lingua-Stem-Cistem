@@ -6,6 +6,9 @@ use warnings;
 
 use utf8;
 
+use 5.006;
+our $VERSION = '0.01';
+
 sub stem {
     my $word = shift // '';
     my $case_insensitive = shift;
@@ -121,7 +124,16 @@ __END__
 
 =head1 NAME
 
-CISTEM Stemmer for German
+CISTEM - Stemmer for German
+
+=begin html
+
+<a href="https://travis-ci.org/wollmers/Lingua-Stem-Cistem"><img src="https://travis-ci.org/wollmers/Lingua-Stem-Cistem.png" alt="Lingua-Stem-Cistem"></a>
+<a href='https://coveralls.io/r/wollmers/Lingua-Stem-Cistem?branch=master'><img src='https://coveralls.io/repos/wollmers/Lingua-Stem-Cistem/badge.png?branch=master' alt='Coverage Status' /></a>
+<a href='http://cpants.cpanauthors.org/dist/Lingua-Stem-Cistem'><img src='http://cpants.cpanauthors.org/dist/Lingua-Stem-Cistem.png' alt='Kwalitee Score' /></a>
+<a href="http://badge.fury.io/pl/Lingua-Stem-Cistem"><img src="https://badge.fury.io/pl/Lingua-Stem-Cistem.svg" alt="CPAN version" height="18"></a>
+<a href="https://kritika.io/users/davorg/repos/wollmers+Lingua-Stem-Cistem/"><img alt="Kritika grade for Lingua-Stem-Cistem" src="https://kritika.io/users/wollmers/repos/wollmers+Lingua-Stem-Cistem/heads/master/status.svg"></a>
+=end html
 
 =head1 SYNOPSIS
 
@@ -171,5 +183,30 @@ addition to returning the stem, it also returns the rest that was removed at
 the end. To be able to return the stem unchanged so the stem and the rest
 can be concatenated to form the original word, all subsitutions that altered
 the stem in any other way than by removing letters at the end were left out.
+
+=head1 SOURCE REPOSITORY
+
+L<http://github.com/wollmers/Lingua-Stem-Cistem>
+
+=head1 AUTHOR
+
+Helmut Wollmersdorfer E<lt>helmut.wollmersdorfer@gmail.comE<gt>
+
+=begin html
+
+<a href='http://cpants.cpanauthors.org/author/wollmers'><img src='http://cpants.cpanauthors.org/author/wollmers.png' alt='Kwalitee Score' /></a>
+
+=end html
+
+=head1 COPYRIGHT
+
+Copyright 2019 Helmut Wollmersdorfer
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 SEE ALSO
 
 =cut
