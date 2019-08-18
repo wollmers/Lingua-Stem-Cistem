@@ -146,7 +146,7 @@ CISTEM - Stemmer for German
 
 This is the official Perl implementation of the CISTEM stemmer.
 It is based on the paper
-Leonie Weissweiler, Alexander Fraser (2017).
+Leonie Weißweiler, Alexander Fraser (2017).
 Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
 In Proceedings of the German Society for Computational Linguistics and Language Technology (GSCL)
 which can be read here:
@@ -163,7 +163,7 @@ most other stemmers.
 
 =over 8
 
-=item stem($word, $case_insensitivity)
+=item stem($word, $case_insensitivity, $ge_remove)
 
 This method takes the word to be stemmed and a boolean specifiying if case-insensitive
 stemming should be used and returns the stemmed word. If only the word
