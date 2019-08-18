@@ -9,6 +9,12 @@ use utf8;
 use 5.006;
 our $VERSION = '0.01';
 
+sub new {
+  my $class = shift;
+  # uncoverable condition false
+  bless @_ ? @_ > 1 ? {@_} : {%{$_[0]}} : {}, ref $class || $class;
+}
+
 sub stem {
     my $word = shift // '';
     my $case_insensitive = shift;
