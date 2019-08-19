@@ -1,7 +1,7 @@
 {
    "abstract" : "Stemmer for German",
    "author" : [
-      "Helmut Wollmersdorfer <helmut.wollmersdorfer@gmail.com>"
+      "Helmut Wollmersdorfer <helmut@wollmersdorfer.at>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Dist::Milla version v1.0.16, Dist::Zilla version 6.008, CPAN::Meta::Converter version 2.150005",
@@ -49,9 +49,6 @@
       }
    },
    "version" : "0.01",
-   "x_contributors" : [
-      "Helmut Wollmersdorfer <helmut@wollmersdorfer.at>"
-   ],
    "x_serialization_backend" : "Cpanel::JSON::XS version 3.0225"
 }
 

@@ -29,14 +29,19 @@ sub stem {
 
     $word =~ s/^ge(.{4,})/$1/;
 
-    $word =~ s/sch/\$/g;
-    $word =~ s/ei/\%/g;
-    $word =~ s/ie/\&/g;
+    #$word =~ s/sch/\$/g;
+    #$word =~ s/ei/\%/g;
+    #$word =~ s/ie/\&/g;
+
+    $word =~ s/sch/\N{U+0006}/g; # \N{U+0006} ACK
+    $word =~ s/ei/\N{U+0007}/g;  # \N{U+0007} BEL
+    $word =~ s/ie/\N{U+0008}/g;  # \N{U+0008} BS
+
     $word =~ s/(.)\1/$1*/g;
 
     my @graphemes = $word =~ m/\X/g;
     my $length = scalar @graphemes;
-    #my $length = scalar ($word =~ m/\X/g); # does not work
+    #my $length = scalar (($word =~ m/\X/g)); # does not work
 
     #while(length($word)>3) {
     while($length > 3) {
@@ -48,9 +53,14 @@ sub stem {
     }
 
     $word =~ s/(.)\*/$1$1/g;
-    $word =~ s/\$/sch/g;
-    $word =~ s/\%/ei/g;
-    $word =~ s/\&/ie/g;
+
+    #$word =~ s/\$/sch/g;
+    #$word =~ s/\%/ei/g;
+    #$word =~ s/\&/ie/g;
+
+    $word =~ s/\N{U+0006}/sch/g; # \N{U+0006} ACK
+    $word =~ s/\N{U+0007}/ei/g;  # \N{U+0007} BEL
+    $word =~ s/\N{U+0008}/ie/g;  # \N{U+0008} BS
 
     return $word;
 }
@@ -61,44 +71,62 @@ sub segment {
     my $word = shift // '';
     my $case_insensitive = shift;
 
-    my $upper = (ucfirst $word eq $word);
+    my $ucfirst = (ucfirst $word eq $word);
 
     $word =  lc($word);
-    #$word =~ tr/äöü/aou/;
-    #$word =~ s/ß/ss/g; # this changes the length
+    $word =~ tr/äöü/aou/;
+    $word =~ s/([aou])\N{U+0308}/$1/g; # remove U+0308 COMBINING DIAERESIS
+    $word =~ s/ß/ss/g;
 
-    #my $prefix = '';
-    #if ($word =~ s/^ge(.{4,})/$1/) {
-    #  $prefix = 'ge';
-    #}
+    my $prefix = '';
+    if ($word =~ s/^ge(.{4,})/$1/) {
+      $prefix = 'ge';
+    }
 
     my $original = $word;
 
-    $word =~ s/sch/\$/g;
-    $word =~ s/ei/\%/g;
-    $word =~ s/ie/\&/g;
+    #$word =~ s/sch/\$/g;
+    #$word =~ s/ei/\%/g;
+    #$word =~ s/ie/\&/g;
+
+    $word =~ s/sch/\N{U+0006}/g; # \N{U+0006} ACK
+    $word =~ s/ei/\N{U+0007}/g;  # \N{U+0007} BEL
+    $word =~ s/ie/\N{U+0008}/g;  # \N{U+0008} BS
+
+
     $word =~ s/(.)\1/$1*/g;
+
+    my @graphemes = $word =~ m/\X/g;
+    my $length = scalar @graphemes;
+    #my $length = scalar (($word =~ m/\X/g)); # does not work
 
     my $suffix_length = 0;
 
-    while(length($word)>3){
-        if( length($word)>5 && ($word =~ s/(e[mr])$// || $word =~ s/(nd)$//) ) {
+    while($length > 3){
+        if( $length > 5 && ($word =~ s/(e[mr])$// || $word =~ s/(nd)$//) ) {
             $suffix_length += 2;
+            $length -= 2;
         }
-        elsif( (!($upper) || $case_insensitive) && $word =~ s/t$//) {
+        elsif( (!($ucfirst) || $case_insensitive) && $word =~ s/t$//) {
             $suffix_length++;
+            $length--;
         }
         elsif( $word =~ s/([esn])$//) {
             $suffix_length++;
+            $length--;
         }
         else{ last; }
     }
 
     $word =~ s/(.)\*/$1$1/g;
 
-    $word =~ s/\$/sch/g;
-    $word =~ s/\%/ei/g;
-    $word =~ s/\&/ie/g;
+    #$word =~ s/\$/sch/g;
+    #$word =~ s/\%/ei/g;
+    #$word =~ s/\&/ie/g;
+
+    $word =~ s/\N{U+0006}/sch/g; # \N{U+0006} ACK
+    $word =~ s/\N{U+0007}/ei/g;  # \N{U+0007} BEL
+    $word =~ s/\N{U+0008}/ie/g;  # \N{U+0008} BS
 
     my $suffix = '';
 
@@ -106,8 +134,8 @@ sub segment {
         $suffix = substr($original, - $suffix_length);
     }
 
-    #return ($prefix, $word, $suffix);
-    return ($word, $suffix);
+    return ($prefix, $word, $suffix);
+    #return ($word, $suffix);
 }
 
 1;
@@ -123,7 +151,6 @@ CISTEM - Stemmer for German
 
 =begin html
 
-[![License: Artistic-2.0](https://img.shields.io/badge/License-Perl-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
 <a href="https://opensource.org/licenses/Artistic-2.0"><img src="https://img.shields.io/badge/License-Perl-0298c3.svg" alt="Perl"></a>
 <a href="https://travis-ci.org/wollmers/Lingua-Stem-Cistem"><img src="https://travis-ci.org/wollmers/Lingua-Stem-Cistem.png" alt="Build"></a>
 <a href='https://coveralls.io/r/wollmers/Lingua-Stem-Cistem?branch=master'><img src='https://coveralls.io/repos/wollmers/Lingua-Stem-Cistem/badge.png?branch=master' alt='Coverage Status' /></a>
@@ -146,7 +173,7 @@ CISTEM - Stemmer for German
 
 This is the official Perl implementation of the CISTEM stemmer.
 It is based on the paper
-Leonie Weißweiler, Alexander Fraser (2017).
+Leonie Weissweiler, Alexander Fraser (2017).
 Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
 In Proceedings of the German Society for Computational Linguistics and Language Technology (GSCL)
 which can be read here:
@@ -191,7 +218,7 @@ L<http://github.com/wollmers/Lingua-Stem-Cistem>
 
 =head1 AUTHOR
 
-Helmut Wollmersdorfer E<lt>helmut.wollmersdorfer@gmail.comE<gt>
+Helmut Wollmersdorfer E<lt>helmut@wollmersdorfer.atE<gt>
 
 =begin html
 

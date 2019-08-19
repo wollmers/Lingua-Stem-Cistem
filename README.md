@@ -3,7 +3,6 @@
 CISTEM - Stemmer for German
 
 <div>
-    [![License: Artistic-2.0](https://img.shields.io/badge/License-Perl-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
     <a href="https://opensource.org/licenses/Artistic-2.0"><img src="https://img.shields.io/badge/License-Perl-0298c3.svg" alt="Perl"></a>
     <a href="https://travis-ci.org/wollmers/Lingua-Stem-Cistem"><img src="https://travis-ci.org/wollmers/Lingua-Stem-Cistem.png" alt="Build"></a>
     <a href='https://coveralls.io/r/wollmers/Lingua-Stem-Cistem?branch=master'><img src='https://coveralls.io/repos/wollmers/Lingua-Stem-Cistem/badge.png?branch=master' alt='Coverage Status' /></a>
@@ -25,7 +24,7 @@ CISTEM - Stemmer for German
 
 This is the official Perl implementation of the CISTEM stemmer.
 It is based on the paper
-Leonie Weißweiler, Alexander Fraser (2017).
+Leonie Wei�weiler, Alexander Fraser (2017).
 Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
 In Proceedings of the German Society for Computational Linguistics and Language Technology (GSCL)
 which can be read here:
@@ -65,7 +64,7 @@ most other stemmers.
 
 # AUTHOR
 
-Helmut Wollmersdorfer &lt;helmut.wollmersdorfer@gmail.com>
+Helmut Wollmersdorfer &lt;helmut@wollmersdorfer.at>
 
 <div>
     <a href='http://cpants.cpanauthors.org/author/wollmers'><img src='http://cpants.cpanauthors.org/author/wollmers.png' alt='Kwalitee Score' /></a>
