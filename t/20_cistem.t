@@ -13,9 +13,10 @@ use lib qw(../lib/);
 use Test::More;
 use Test::More::UTF8;
 
-use Lingua::Stem::Cistem;
+#use Lingua::Stem::Cistem qw(stem segment stem_robust segment_robust);
+use Lingua::Stem::Cistem (':all');
 
-my $cistem = Lingua::Stem::Cistem->new();
+#my $cistem = Lingua::Stem::Cistem->new();
 
 my $examples0 = [
   [ qw(inhaltsleerer inhaltsleer) ],
@@ -37,6 +38,21 @@ my $tests = [
   ['äöü','aou'],
   ['ß','ss'],
   ['ßß','ssss'],
+
+  ['sch','sch'],
+  ['ei','ei'],
+  ['ie','ie'],
+  ['aa','aa'],
+
+]],
+
+[ 'transliterate_segment', [
+  #[,''], # TODO
+  ['ABC','abc'],
+  ['ÄÖÜ','äöü'],
+  ['äöü','äöü'],
+  ['ß','ß'],
+  ['ßß','ßß'],
 
   ['sch','sch'],
   ['ei','ei'],
@@ -125,18 +141,24 @@ my $tests = [
 ]],
 ];
 
+
+
 #################################
 
+my @stem_cases = qw(transliterate unwordy prefix suffix suffix_t);
+
 if (0) {
+for my $sample (@stem_cases) {
   for my $test_group (@{$tests}) {
     my $test_name = $test_group->[0];
+    next if ($sample ne $test_name);
     my $group_tests = $test_group->[1];
       for my $test (@{$group_tests}) {
         my ($word,$expect,$casing,$ge_remove) =
           @{$test};
         my $casing_string = (defined $casing) ? "$casing" : '';
         my $ge_remove_string = (defined $ge_remove) ? $casing : '';
-        is($cistem->stem($word,$casing,$ge_remove),$expect
+        is(stem($word,$casing,$ge_remove),$expect
           ,
           $test_name
           . ' '
@@ -152,17 +174,52 @@ if (0) {
       }
   }
 }
+}
 
-if (1) {
+my @stem_robust_cases = qw(transliterate wordy prefix suffix suffix_t unicode);
+
+if (0) {
+for my $sample (@stem_robust_cases) {
   for my $test_group (@{$tests}) {
     my $test_name = $test_group->[0];
+    next if ($sample ne $test_name);
     my $group_tests = $test_group->[1];
       for my $test (@{$group_tests}) {
         my ($word,$expect,$casing,$ge_remove) =
           @{$test};
         my $casing_string = (defined $casing) ? "$casing" : '';
         my $ge_remove_string = (defined $ge_remove) ? $casing : '';
-        is([$cistem->segment($word,$casing,$ge_remove)]->[1],$expect
+        is(stem_robust($word,$casing,$ge_remove),$expect
+          ,
+          $test_name
+          . ' '
+          . 'stem_robust('
+          . $word
+          . ','
+          . $casing_string
+          . ','
+          . $ge_remove_string
+          . ') => '
+          . $expect
+        );
+      }
+  }
+}
+}
+
+my @segment_cases = qw(transliterate_segment unwordy suffix suffix_t);
+if (1) {
+for my $sample (@segment_cases) {
+  for my $test_group (@{$tests}) {
+    my $test_name = $test_group->[0];
+    next if ($sample ne $test_name);
+    my $group_tests = $test_group->[1];
+      for my $test (@{$group_tests}) {
+        my ($word,$expect,$casing,$ge_remove) =
+          @{$test};
+        my $casing_string = (defined $casing) ? "$casing" : '';
+        my $ge_remove_string = (defined $ge_remove) ? $casing : '';
+        is([segment($word,$casing,$ge_remove)]->[0],$expect
           ,
           $test_name
           . ' '
@@ -178,11 +235,41 @@ if (1) {
       }
   }
 }
+}
 
+my @segment_robust_cases = qw(transliterate wordy prefix suffix suffix_t unicode);
+if (0) {
+for my $sample (@segment_robust_cases) {
+  for my $test_group (@{$tests}) {
+    my $test_name = $test_group->[0];
+    next if ($sample ne $test_name);
+    my $group_tests = $test_group->[1];
+      for my $test (@{$group_tests}) {
+        my ($word,$expect,$casing,$ge_remove) =
+          @{$test};
+        my $casing_string = (defined $casing) ? "$casing" : '';
+        my $ge_remove_string = (defined $ge_remove) ? $casing : '';
+        is([segment_robust($word,$casing,$ge_remove)]->[1],$expect
+          ,
+          $test_name
+          . ' '
+          . 'segment_robust('
+          . $word
+          . ','
+          . $casing_string
+          . ','
+          . $ge_remove_string
+          . ') => '
+          . $expect
+        );
+      }
+  }
+}
+}
 
 if (0) {
   for my $example (@$examples0) {
-    is($cistem->stem($example->[0]),$example->[1],"$example->[0] -> $example->[1]");
+    is(stem($example->[0]),$example->[1],"$example->[0] -> $example->[1]");
   }
 }
 

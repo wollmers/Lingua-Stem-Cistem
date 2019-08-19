@@ -9,20 +9,8 @@ use lib qw(../lib/);
 
 use Test::More;
 
-my $class = 'Lingua::Stem::Cistem';
+BEGIN { use_ok 'Lingua::Stem::Cistem' };
 
-use_ok($class);
-
-my $object = new_ok($class);
-
-if (1) {
-  ok($object->new());
-  ok($object->new(1,2));
-  ok($object->new({}));
-  ok($object->new({a => 1}));
-
-  ok($class->new());
-}
 
 done_testing;
 
