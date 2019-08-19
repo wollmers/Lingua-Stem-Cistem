@@ -24,7 +24,7 @@ CISTEM - Stemmer for German
 
 This is the official Perl implementation of the CISTEM stemmer.
 It is based on the paper
-Leonie Wei�weiler, Alexander Fraser (2017).
+Leonie Weissweiler, Alexander Fraser (2017).
 Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
 In Proceedings of the German Society for Computational Linguistics and Language Technology (GSCL)
 which can be read here:
