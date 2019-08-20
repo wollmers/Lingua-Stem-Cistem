@@ -102,8 +102,9 @@ sub segment {
 }
 
 sub stem_robust {
-    my $word = shift // '';
+    my $word             = shift // '';
     my $case_insensitive = shift;
+    my $keep_ge_prefix   = shift;
 
     my $ucfirst = (ucfirst $word eq $word);
 
@@ -118,7 +119,7 @@ sub stem_robust {
     $word =~ s/ei/\N{U+0007}/g;  # \N{U+0007} BEL
     $word =~ s/ie/\N{U+0008}/g;  # \N{U+0008} BS
 
-    $word =~ s/(.)\1/$1*/g;
+    $word =~ s/(.)\1/$1*/g unless $keep_ge_prefix;
 
     my @graphemes = $word =~ m/\X/g;
     my $length = scalar @graphemes;
@@ -142,8 +143,9 @@ sub stem_robust {
 
 
 sub segment_robust {
-    my $word = shift // '';
+    my $word             = shift // '';
     my $case_insensitive = shift;
+    my $keep_ge_prefix   = shift;
 
     my $ucfirst = (ucfirst $word eq $word);
 
@@ -153,7 +155,7 @@ sub segment_robust {
     $word =~ s/ß/ss/g;
 
     my $prefix = '';
-    if ($word =~ s/^ge(.{4,})/$1/) {
+    if (!$keep_ge_prefix && $word =~ s/^ge(.{4,})/$1/) {
       $prefix = 'ge';
     }
 
@@ -210,7 +212,7 @@ __END__
 
 =head1 NAME
 
-CISTEM - Stemmer for German
+Lingua::Stem::Cistem - CISTEM Stemmer for German
 
 =begin html
 
@@ -241,14 +243,28 @@ CISTEM - Stemmer for German
 
 This is the CISTEM stemmer for German based on the L</OFFICIAL IMPLEMENTATION>.
 
-It targets at typical tasks like Information Retrieval, Keyword Extraction or Topic Matching.
+Typically stemmers are used in applications like Information Retrieval,
+Keyword Extraction or Topic Matching.
+
+It applies the CISTEM stemming algorithm to a word, returning the stem of this word.
 
 Now (2019) CISTEM has the best f-score compared to other stemmers for German on CPAN, while
 being one of the fastest.
 
-This distribution is adapted to CPAN standards, and the method L</stem> is 6-9 % faster. It also
-provides the two methods L</stem_robust> and L</segment_robust> with the same logic as the official ones,
-but more robust against low quality input, but 40-70 % slower.
+Changes in this distribution applied to the L</OFFICIAL IMPLEMENTATION>:
+
+=over 4
+
+=item - packaged for and released on CPAN
+=item - use strict, use warnings
+=item - the method L</stem> is 6-9 % faster, L</sequence> keeps the speed
+=item - undefined parameter word defaults to the empty string ''
+=item - provides the two methods L</stem_robust> and L</segment_robust> with the same logic as the official ones,
+but more robust against low quality input. L</stem_robust> is ~45% and L</segment_robust> ~70 slower.
+=item - Since Version 0.02 the methods L</stem_robust> and L</segment_robust> support a third parameter $keep_ge_prefix.
+Default is is the previous behavior, i.e. remove the prefix 'ge'.
+
+=back
 
 =head1 OFFICIAL IMPLEMENTATION
 
@@ -273,11 +289,31 @@ Source repository L<https://github.com/LeonieWeissweiler/CISTEM>
 
 =head1 METHODS
 
-=over 8
+Lingua::Stem::Cistem exports no subroutines per default to avoid conflicts with other stemmers.
 
-=item stem
+You can either use the methods without importing the subroutines
 
-    stem($word, $case_insensitivity)
+    use Lingua::Stem::Cistem;
+    my $stem = Lingua::Stem::Cistem::stem($word);
+
+or import some or all of the methods:
+
+    use Lingua::Stem::Cistem qw(stem segment);
+    my $stem = stem($word);
+    my @segments = segment($word);
+
+    use Lingua::Stem::Cistem qw(:all);
+    my $stem = stem($word);
+
+Supported:
+
+    :all    - imports stem segment stem_robust segment_robust
+    :orig   - imports stem segment
+    :robust - imports              stem_robust segment_robust
+
+=over 4
+
+=item stem($word, $case_insensitivity)
 
 This method takes the word to be stemmed and a boolean specifiying if case-insensitive
 stemming should be used and returns the stemmed word. If only the word
@@ -288,22 +324,26 @@ Case sensitivity improves performance only if words in the text may be incorrect
 For all-lowercase and correctly cased text, best performance is achieved by
 using the case-sensitive version.
 
-=item stem_robust
-
-    stem_robust($word, $case_insensitivity)
+=item stem_robust($word, $case_insensitivity, $keep_ge_prefix)
 
 This method works like L</stem> with the following differences for robustness:
 
-- German Umlauts in decomposed normalization form (NFD) work like composed (NFC) ones.
-- Other characters plus combining characters as treated as graphemes, i.e. with length 1
+=over 4
+
+=item - German Umlauts in decomposed normalization form (NFD) work like composed (NFC) ones.
+
+=item - Other characters plus combining characters as treated as graphemes, i.e. with length 1
   instead of 2 or more, which has an influence on the resulting stem.
-- The characters $, %, & keep their value, i.e. they roundtrip.
+
+=item - The characters $, %, & keep their value, i.e. they roundtrip.
+
+=item - If parameter $keep_ge_prefix is set, prefix 'ge' is kept in the stem.
+
+=back
 
 This should not be necessary, if the input is carefully normalized, tokenized, and filtered.
 
-=item segment
-
-    segment($word, $case_insensitivity)
+=item segment($word, $case_insensitivity)
 
 This method works very similarly to stem. The only difference is that in
 addition to returning the stem, it also returns the rest that was removed at
@@ -313,15 +353,48 @@ the stem in any other way than by removing letters at the end were left out.
 
 	my ($stem, $suffix) = segment($word);
 
-=item segment_robust
+=item segment_robust($word, $case_insensitivity, $keep_ge_prefix)
 
-    segment_robust($word, $case_insensitivity)
-
-This method works exactly like L<stem_robust> and returns a list of prefix, stem and suffix:
+This method works exactly like L</stem_robust> and returns a list of prefix, stem and suffix:
 
 	my ($prefix, $stem, $suffix) = segment_robust($word);
 
 =back
+
+=head1 SPEED COMPARISON
+
+Tests were run using the file goldstandard1.txt (317441 words, 3.76 MB), which can be
+found here:
+
+L<https://github.com/LeonieWeissweiler/CISTEM/blob/master/gold_standards/goldstandard1.txt>
+
+The test iterates over the words in the file. Times measured include the overhead of startup and iteration.
+
+Platform (only one thread used)
+
+    Intel® Core™ i7-4770HQ Processor
+    4 Cores, 8 Threads
+    2.20 - 3.40 GHz
+    6 MB Cache
+    16GB DDR3 RAM
+
+    MacOS Mojave Version 10.14.4
+    Perl 5.20.1
+
+ +-------------------------------------------------------------+
+ | source: goldstandard1.txt   | words: 317441                 |
+ +-------------------------------------------------------------+
+ | method         | version    | duration | factor | words/sec |
+ |-------------------------------------------------------------|
+ | stem           | official   |  2.862s  |  1.00  |  110916   |
+ | stem           | this v0.01 |  2.678s  |  0.94  |  118536   |
+ | stem_robust    | this v0.01 |  4.111s  |  1.44  |   77217   |
+ |                |            |          |        |           |
+ | segment        | official   |  2.594s  |  1.00  |  122375   |
+ | segment        | this v0.01 |  2.642s  |  1.02  |  120151   |
+ | segment_robust | this v0.01 |  4.368s  |  1.68  |   72674   |
+ +-------------------------------------------------------------+
+
 
 =head1 SOURCE REPOSITORY
 

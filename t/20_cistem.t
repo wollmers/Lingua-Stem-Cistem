@@ -76,7 +76,21 @@ my $tests = [
 
 [ 'prefix', [
   ['ge123','ge123'],
+  ['ge123','ge123',0,0],
+  ['ge123','ge123',0,1],
   ['ge1234','1234'],
+  ['ge1234','1234',0,0],
+  ['ge1234','1234',0,1],
+
+]],
+
+[ 'prefix_keepers', [
+  ['ge123','ge123'],
+  ['ge123','ge123',0,0],
+  ['ge123','ge123',0,1],
+  ['ge1234','1234'],
+  ['ge1234','1234',0,0],
+  ['ge1234','ge1234',0,1],
 
 ]],
 
@@ -147,7 +161,7 @@ my $tests = [
 
 my @stem_cases = qw(transliterate unwordy prefix suffix suffix_t);
 
-if (0) {
+if (1) {
 for my $sample (@stem_cases) {
   for my $test_group (@{$tests}) {
     my $test_name = $test_group->[0];
@@ -157,7 +171,7 @@ for my $sample (@stem_cases) {
         my ($word,$expect,$casing,$ge_remove) =
           @{$test};
         my $casing_string = (defined $casing) ? "$casing" : '';
-        my $ge_remove_string = (defined $ge_remove) ? $casing : '';
+        my $ge_remove_string = (defined $ge_remove) ? "$ge_remove" : '';
         is(stem($word,$casing,$ge_remove),$expect
           ,
           $test_name
@@ -176,9 +190,9 @@ for my $sample (@stem_cases) {
 }
 }
 
-my @stem_robust_cases = qw(transliterate wordy prefix suffix suffix_t unicode);
+my @stem_robust_cases = qw(transliterate wordy prefix_keepers suffix suffix_t unicode);
 
-if (0) {
+if (1) {
 for my $sample (@stem_robust_cases) {
   for my $test_group (@{$tests}) {
     my $test_name = $test_group->[0];
@@ -188,7 +202,7 @@ for my $sample (@stem_robust_cases) {
         my ($word,$expect,$casing,$ge_remove) =
           @{$test};
         my $casing_string = (defined $casing) ? "$casing" : '';
-        my $ge_remove_string = (defined $ge_remove) ? $casing : '';
+        my $ge_remove_string = (defined $ge_remove) ? "$ge_remove" : '';
         is(stem_robust($word,$casing,$ge_remove),$expect
           ,
           $test_name
@@ -218,7 +232,7 @@ for my $sample (@segment_cases) {
         my ($word,$expect,$casing,$ge_remove) =
           @{$test};
         my $casing_string = (defined $casing) ? "$casing" : '';
-        my $ge_remove_string = (defined $ge_remove) ? $casing : '';
+        my $ge_remove_string = (defined $ge_remove) ? "$ge_remove" : '';
         is([segment($word,$casing,$ge_remove)]->[0],$expect
           ,
           $test_name
@@ -237,8 +251,8 @@ for my $sample (@segment_cases) {
 }
 }
 
-my @segment_robust_cases = qw(transliterate wordy prefix suffix suffix_t unicode);
-if (0) {
+my @segment_robust_cases = qw(transliterate wordy prefix_keepers suffix suffix_t unicode);
+if (1) {
 for my $sample (@segment_robust_cases) {
   for my $test_group (@{$tests}) {
     my $test_name = $test_group->[0];
@@ -247,8 +261,8 @@ for my $sample (@segment_robust_cases) {
       for my $test (@{$group_tests}) {
         my ($word,$expect,$casing,$ge_remove) =
           @{$test};
-        my $casing_string = (defined $casing) ? "$casing" : '';
-        my $ge_remove_string = (defined $ge_remove) ? $casing : '';
+        my $casing_string    = (defined $casing) ? "$casing" : '';
+        my $ge_remove_string = (defined $ge_remove) ? "$ge_remove" : '';
         is([segment_robust($word,$casing,$ge_remove)]->[1],$expect
           ,
           $test_name
