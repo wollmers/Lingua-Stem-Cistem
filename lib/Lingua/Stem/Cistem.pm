@@ -10,7 +10,7 @@ use 5.006;
 require Exporter;
 
 BEGIN {
-    $Lingua::Stem::Cistem::VERSION     = '0.01';
+    $Lingua::Stem::Cistem::VERSION     = '0.02';
     @Lingua::Stem::Cistem::ISA         = qw(Exporter);
     @Lingua::Stem::Cistem::EXPORT      = qw();
     @Lingua::Stem::Cistem::EXPORT_OK   = qw(stem segment stem_robust segment_robust);
@@ -60,8 +60,6 @@ sub segment {
     my $upper = (ucfirst $word eq $word);
 
     $word =  lc($word);
-    #$word =~ tr/äöü/aou/;
-    #$word =~ s/ß/ss/g; # this changes the length
 
     my $original = $word;
 
@@ -97,7 +95,6 @@ sub segment {
         $suffix = substr($original, - $suffix_length);
     }
 
-    #return ($prefix, $word, $suffix);
     return ($word, $suffix);
 }
 
@@ -372,7 +369,7 @@ The test iterates over the words in the file. Times measured include the overhea
 
 Platform (only one thread used)
 
-    Intel® Core™ i7-4770HQ Processor
+    Intel Core i7-4770HQ Processor
     4 Cores, 8 Threads
     2.20 - 3.40 GHz
     6 MB Cache
