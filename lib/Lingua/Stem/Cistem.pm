@@ -113,13 +113,13 @@ sub stem_robust {
     $word =~ s/([aou])\N{U+0308}/$1/g; # remove U+0308 COMBINING DIAERESIS
     $word =~ s/ß/ss/g;
 
-    $word =~ s/^ge(.{4,})/$1/;
+    $word =~ s/^ge(.{4,})/$1/ unless $keep_ge_prefix;
 
     $word =~ s/sch/\N{U+0006}/g; # \N{U+0006} ACK
     $word =~ s/ei/\N{U+0007}/g;  # \N{U+0007} BEL
     $word =~ s/ie/\N{U+0008}/g;  # \N{U+0008} BS
 
-    $word =~ s/(.)\1/$1*/g unless $keep_ge_prefix;
+    $word =~ s/(.)\1/$1*/g;
 
     my @graphemes = $word =~ m/\X/g;
     my $length = scalar @graphemes;
