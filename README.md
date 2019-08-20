@@ -1,6 +1,6 @@
 # NAME
 
-CISTEM - Stemmer for German
+Lingua::Stem::Cistem - CISTEM Stemmer for German
 
 <div>
     <a href="https://opensource.org/licenses/Artistic-2.0"><img src="https://img.shields.io/badge/License-Perl-0298c3.svg" alt="Perl"></a>
@@ -29,14 +29,24 @@ CISTEM - Stemmer for German
 
 This is the CISTEM stemmer for German based on the ["OFFICIAL IMPLEMENTATION"](#official-implementation).
 
-It targets at typical tasks like Information Retrieval, Keyword Extraction or Topic Matching.
+Typically stemmers are used in applications like Information Retrieval,
+Keyword Extraction or Topic Matching.
+
+It applies the CISTEM stemming algorithm to a word, returning the stem of this word.
 
 Now (2019) CISTEM has the best f-score compared to other stemmers for German on CPAN, while
 being one of the fastest.
 
-This distribution is adapted to CPAN standards, and the method ["stem"](#stem) is 6-9 % faster. It also
-provides the two methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) with the same logic as the official ones,
-but more robust against low quality input, but 40-70 % slower.
+Changes in this distribution applied to the ["OFFICIAL IMPLEMENTATION"](#official-implementation):
+
+- - packaged for and released on CPAN
+=item - use strict, use warnings
+=item - the method ["stem"](#stem) is 6-9 % faster, ["sequence"](#sequence) keeps the speed
+=item - undefined parameter word defaults to the empty string ''
+=item - provides the two methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) with the same logic as the official ones,
+but more robust against low quality input. ["stem\_robust"](#stem_robust) is ~45% and ["segment\_robust"](#segment_robust) ~70 slower.
+=item - Since Version 0.02 the methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) support a third parameter $keep\_ge\_prefix.
+Default is is the previous behavior, i.e. remove the prefix 'ge'.
 
 # OFFICIAL IMPLEMENTATION
 
@@ -61,9 +71,29 @@ Source repository [https://github.com/LeonieWeissweiler/CISTEM](https://github.c
 
 # METHODS
 
-- stem
+Lingua::Stem::Cistem exports no subroutines per default to avoid conflicts with other stemmers.
 
-        stem($word, $case_insensitivity)
+You can either use the methods without importing the subroutines
+
+    use Lingua::Stem::Cistem;
+    my $stem = Lingua::Stem::Cistem::stem($word);
+
+or import some or all of the methods:
+
+    use Lingua::Stem::Cistem qw(stem segment);
+    my $stem = stem($word);
+    my @segments = segment($word);
+
+    use Lingua::Stem::Cistem qw(:all);
+    my $stem = stem($word);
+
+Supported:
+
+    :all    - imports stem segment stem_robust segment_robust
+    :orig   - imports stem segment
+    :robust - imports              stem_robust segment_robust
+
+- stem($word, $case\_insensitivity)
 
     This method takes the word to be stemmed and a boolean specifiying if case-insensitive
     stemming should be used and returns the stemmed word. If only the word
@@ -74,22 +104,19 @@ Source repository [https://github.com/LeonieWeissweiler/CISTEM](https://github.c
     For all-lowercase and correctly cased text, best performance is achieved by
     using the case-sensitive version.
 
-- stem\_robust
-
-        stem_robust($word, $case_insensitivity)
+- stem\_robust($word, $case\_insensitivity, $keep\_ge\_prefix)
 
     This method works like ["stem"](#stem) with the following differences for robustness:
 
-    \- German Umlauts in decomposed normalization form (NFD) work like composed (NFC) ones.
-    \- Other characters plus combining characters as treated as graphemes, i.e. with length 1
+    - - German Umlauts in decomposed normalization form (NFD) work like composed (NFC) ones.
+    - - Other characters plus combining characters as treated as graphemes, i.e. with length 1
       instead of 2 or more, which has an influence on the resulting stem.
-    \- The characters $, %, & keep their value, i.e. they roundtrip.
+    - - The characters $, %, & keep their value, i.e. they roundtrip.
+    - - If parameter $keep\_ge\_prefix is set, prefix 'ge' is kept in the stem.
 
     This should not be necessary, if the input is carefully normalized, tokenized, and filtered.
 
-- segment
-
-        segment($word, $case_insensitivity)
+- segment($word, $case\_insensitivity)
 
     This method works very similarly to stem. The only difference is that in
     addition to returning the stem, it also returns the rest that was removed at
@@ -99,13 +126,45 @@ Source repository [https://github.com/LeonieWeissweiler/CISTEM](https://github.c
 
             my ($stem, $suffix) = segment($word);
 
-- segment\_robust
+- segment\_robust($word, $case\_insensitivity, $keep\_ge\_prefix)
 
-        segment_robust($word, $case_insensitivity)
-
-    This method works exactly like [stem\_robust](https://metacpan.org/pod/stem_robust) and returns a list of prefix, stem and suffix:
+    This method works exactly like ["stem\_robust"](#stem_robust) and returns a list of prefix, stem and suffix:
 
             my ($prefix, $stem, $suffix) = segment_robust($word);
+
+# SPEED COMPARISON
+
+Tests were run using the file goldstandard1.txt (317441 words, 3.76 MB), which can be
+found here:
+
+[https://github.com/LeonieWeissweiler/CISTEM/blob/master/gold\_standards/goldstandard1.txt](https://github.com/LeonieWeissweiler/CISTEM/blob/master/gold_standards/goldstandard1.txt)
+
+The test iterates over the words in the file. Times measured include the overhead of startup and iteration.
+
+Platform (only one thread used)
+
+       Intel Core i7-4770HQ Processor
+       4 Cores, 8 Threads
+       2.20 - 3.40 GHz
+       6 MB Cache
+       16GB DDR3 RAM
+
+       MacOS Mojave Version 10.14.4
+       Perl 5.20.1
+
+    +-------------------------------------------------------------+
+    | source: goldstandard1.txt   | words: 317441                 |
+    +-------------------------------------------------------------+
+    | method         | version    | duration | factor | words/sec |
+    |-------------------------------------------------------------|
+    | stem           | official   |  2.862s  |  1.00  |  110916   |
+    | stem           | this v0.01 |  2.678s  |  0.94  |  118536   |
+    | stem_robust    | this v0.01 |  4.111s  |  1.44  |   77217   |
+    |                |            |          |        |           |
+    | segment        | official   |  2.594s  |  1.00  |  122375   |
+    | segment        | this v0.01 |  2.642s  |  1.02  |  120151   |
+    | segment_robust | this v0.01 |  4.368s  |  1.68  |   72674   |
+    +-------------------------------------------------------------+
 
 # SOURCE REPOSITORY
 
