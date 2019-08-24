@@ -37,24 +37,27 @@ It applies the CISTEM stemming algorithm to a word, returning the stem of this w
 Now (2019) CISTEM has the best f-score compared to other stemmers for German on CPAN, while
 being one of the fastest.
 
+The methods in this package keep their original logic and API, only the module name
+changed from Cistem to Lingua::Stem::Cistem.
+
 Changes in this distribution applied to the ["OFFICIAL IMPLEMENTATION"](#official-implementation):
 
-- - packaged for and released on CPAN
-=item - use strict, use warnings
-=item - the method ["stem"](#stem) is 6-9 % faster, ["sequence"](#sequence) keeps the speed
-=item - undefined parameter word defaults to the empty string ''
-=item - provides the two methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) with the same logic as the official ones,
+- packaged for and released on CPAN
+- use strict, use warnings
+- the method ["stem"](#stem) is 6-9 % faster, ["sequence"](#sequence) keeps the speed
+- undefined parameter word defaults to the empty string ''
+- provides two additional methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) with the same logic as the official ones,
 but more robust against low quality input. ["stem\_robust"](#stem_robust) is ~45% and ["segment\_robust"](#segment_robust) ~70 slower.
-=item - Since Version 0.02 the methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) support a third parameter $keep\_ge\_prefix.
+- Since Version 0.02 the methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) support a third parameter $keep\_ge\_prefix.
 Default is is the previous behavior, i.e. remove the prefix 'ge'.
 
 # OFFICIAL IMPLEMENTATION
 
 It is based on the paper
 
-Leonie Weissweiler, Alexander Fraser (2017).
-Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
-In Proceedings of the German Society for Computational Linguistics and Language Technology (GSCL)
+    Leonie Weissweiler, Alexander Fraser (2017).
+    Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
+    In Proceedings of the German Society for Computational Linguistics and Language Technology (GSCL)
 
 which can be read here:
 
@@ -108,11 +111,12 @@ Supported:
 
     This method works like ["stem"](#stem) with the following differences for robustness:
 
-    - - German Umlauts in decomposed normalization form (NFD) work like composed (NFC) ones.
-    - - Other characters plus combining characters as treated as graphemes, i.e. with length 1
+    - German Umlauts in decomposed normalization form (NFD) work like composed (NFC) ones.
+    - Other characters plus combining characters are treated as graphemes, i.e. with length 1
       instead of 2 or more, which has an influence on the resulting stem.
-    - - The characters $, %, & keep their value, i.e. they roundtrip.
-    - - If parameter $keep\_ge\_prefix is set, prefix 'ge' is kept in the stem.
+    - The characters $, %, & keep their value, i.e. they roundtrip.
+    - If parameter $keep\_ge\_prefix is set, prefix 'ge' is kept in the stem. Be careful
+      if this really improves the results. Mostly removing 'ge' performs better.
 
     This should not be necessary, if the input is carefully normalized, tokenized, and filtered.
 
@@ -141,7 +145,7 @@ found here:
 
 The test iterates over the words in the file. Times measured include the overhead of startup and iteration.
 
-Platform (only one thread used)
+       Platform (only one thread used)
 
        Intel Core i7-4770HQ Processor
        4 Cores, 8 Threads
@@ -172,7 +176,7 @@ Platform (only one thread used)
 
 # AUTHOR
 
-Helmut Wollmersdorfer &lt;helmut@wollmersdorfer.at>
+Helmut Wollmersdorfer <helmut@wollmersdorfer.at>
 
 <div>
     <a href='http://cpants.cpanauthors.org/author/wollmers'><img src='http://cpants.cpanauthors.org/author/wollmers.png' alt='Kwalitee Score' /></a>
@@ -181,6 +185,7 @@ Helmut Wollmersdorfer &lt;helmut@wollmersdorfer.at>
 # COPYRIGHT
 
 Copyright 2019 Helmut Wollmersdorfer
+Copyright 2017 Leonie Weissweiler (original version)
 
 # LICENSE
 
