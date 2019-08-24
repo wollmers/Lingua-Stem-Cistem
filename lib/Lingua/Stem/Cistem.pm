@@ -10,7 +10,7 @@ use 5.006;
 require Exporter;
 
 BEGIN {
-    $Lingua::Stem::Cistem::VERSION     = '0.02';
+    $Lingua::Stem::Cistem::VERSION     = '0.03';
     @Lingua::Stem::Cistem::ISA         = qw(Exporter);
     @Lingua::Stem::Cistem::EXPORT      = qw();
     @Lingua::Stem::Cistem::EXPORT_OK   = qw(stem segment stem_robust segment_robust);
