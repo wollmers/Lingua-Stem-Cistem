@@ -2,6 +2,8 @@ Revision history for Lingua::Stem::Cistem
 
 {{$NEXT}}
 
+        - improved Kwalitee scores
+
 0.03  2019-08-24 16:06:07 CEST
 
         - improved docs
