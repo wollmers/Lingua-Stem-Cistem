@@ -17,6 +17,21 @@ else {
   add_stopwords(qw(
      Helmut
      Wollmersdorfer
+     CISTEM
+     Cistem
+     Leonie
+     NFD
+     Stemmer
+     Weissweiler
+     ge
+     goldstandard
+     graphemes
+     roundtrip
+     specifiying
+     stemmer
+     stemmers
+     subsitutions
+     tokenized
   ));
   all_pod_files_spelling_ok();
 }
