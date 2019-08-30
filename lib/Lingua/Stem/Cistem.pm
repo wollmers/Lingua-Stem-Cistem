@@ -259,7 +259,7 @@ Changes in this distribution applied to the L</OFFICIAL IMPLEMENTATION>:
 
 =item use strict, use warnings
 
-=item the method L</stem> is 6-9 % faster, L</sequence> keeps the speed
+=item the method L</stem> is 6-9 % faster, L</segment> keeps the speed
 
 =item undefined parameter word defaults to the empty string ''
 
