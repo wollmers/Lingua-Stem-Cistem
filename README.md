@@ -44,7 +44,7 @@ Changes in this distribution applied to the ["OFFICIAL IMPLEMENTATION"](#officia
 
 - packaged for and released on CPAN
 - use strict, use warnings
-- the method ["stem"](#stem) is 6-9 % faster, ["sequence"](#sequence) keeps the speed
+- the method ["stem"](#stem) is 6-9 % faster, ["segment"](#segment) keeps the speed
 - undefined parameter word defaults to the empty string ''
 - provides two additional methods ["stem\_robust"](#stem_robust) and ["segment\_robust"](#segment_robust) with the same logic as the official ones,
 but more robust against low quality input. ["stem\_robust"](#stem_robust) is ~45% and ["segment\_robust"](#segment_robust) ~70 slower.
