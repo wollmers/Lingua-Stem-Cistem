@@ -1,5 +1,9 @@
 #!perl
 
+use strict;
+use warnings;
+use utf8;
+
 BEGIN {
   unless ($ENV{AUTHOR_TESTING}) {
     require Test::More;
@@ -23,6 +27,7 @@ else {
      NFD
      Stemmer
      Weissweiler
+     Weißweiler
      ge
      goldstandard
      graphemes
