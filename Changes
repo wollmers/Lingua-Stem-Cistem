@@ -1,6 +1,7 @@
 Revision history for Lingua::Stem::Cistem
 
 {{$NEXT}}
+        - improved pod
 
 0.06  2019-11-06 11:48:51 CET
         - correct scharp s in POD
