@@ -273,9 +273,9 @@ Default is is the previous behavior, i.e. remove the prefix 'ge'.
 
 =head1 OFFICIAL IMPLEMENTATION
 
-It is based on the paper
-
 =encoding UTF-8
+
+It is based on the paper
 
     Leonie Weißweiler, Alexander Fraser (2017).
     Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
