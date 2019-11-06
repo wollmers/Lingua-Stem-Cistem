@@ -50,7 +50,7 @@
          }
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/wollmers/Lingua-Stem-Cistem/issues"
@@ -62,7 +62,7 @@
          "web" : "https://github.com/wollmers/Lingua-Stem-Cistem"
       }
    },
-   "version" : "0.05",
+   "version" : "0.06",
    "x_contributors" : [
       "Mohammad S Anwar <mohammad.anwar@yahoo.com>"
    ],
