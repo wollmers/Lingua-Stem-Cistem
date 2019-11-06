@@ -275,7 +275,7 @@ Default is is the previous behavior, i.e. remove the prefix 'ge'.
 
 It is based on the paper
 
-    Leonie Weissweiler, Alexander Fraser (2017).
+    Leonie Weißweiler, Alexander Fraser (2017).
     Developing a Stemmer for German Based on a Comparative Analysis of Publicly Available Stemmers.
     In Proceedings of the German Society for Computational Linguistics and Language Technology (GSCL)
 
@@ -428,7 +428,7 @@ Helmut Wollmersdorfer E<lt>helmut@wollmersdorfer.atE<gt>
 =head1 COPYRIGHT
 
 Copyright 2019 Helmut Wollmersdorfer
-Copyright 2017 Leonie Weissweiler (original version)
+Copyright 2017 Leonie Weißweiler (original version)
 
 =head1 LICENSE
 
