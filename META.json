@@ -50,7 +50,13 @@
          }
       }
    },
-   "release_status" : "testing",
+   "provides" : {
+      "Lingua::Stem::Cistem" : {
+         "file" : "lib/Lingua/Stem/Cistem.pm",
+         "version" : "0.07"
+      }
+   },
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/wollmers/Lingua-Stem-Cistem/issues"
