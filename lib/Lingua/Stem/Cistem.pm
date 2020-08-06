@@ -123,10 +123,10 @@ sub stem_robust {
     #my $length = scalar (($word =~ m/\X/g)); # does not work
 
     while($length > 3) {
-        if( $length>5 && ($word =~ s/e[mr]$// || $word =~ s/nd$//) ) {$length -= 2;}
-        elsif( (!($ucfirst) || $case_insensitive) && $word =~ s/t$//) {$length--;}
-        elsif( $word =~ s/[esn]$//) {$length--;}
-        else { last; }
+        if ( $length>5 && ($word =~ s/e[mr]$// || $word =~ s/nd$//) ) {$length -= 2;}
+        elsif ( (!($ucfirst) || $case_insensitive) && $word =~ s/t$//) {$length--;}
+        elsif ( $word =~ s/[esn]$//) {$length--;}
+        else  { last; }
     }
 
     $word =~ s/(.)\*/$1$1/g;
@@ -431,7 +431,7 @@ Helmut Wollmersdorfer E<lt>helmut@wollmersdorfer.atE<gt>
 
 =encoding UTF-8
 
-Copyright 2019 Helmut Wollmersdorfer
+Copyright 2019-2020 Helmut Wollmersdorfer
 Copyright 2017 Leonie Weißweiler (original version)
 
 =head1 LICENSE
