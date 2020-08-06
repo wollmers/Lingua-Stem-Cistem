@@ -192,7 +192,7 @@ Helmut Wollmersdorfer <helmut@wollmersdorfer.at>
 
 # COPYRIGHT
 
-Copyright 2019 Helmut Wollmersdorfer
+Copyright 2019-2020 Helmut Wollmersdorfer
 Copyright 2017 Leonie Weißweiler (original version)
 
 # LICENSE
